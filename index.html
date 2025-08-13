@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bean Dawg</title>
+  <link rel="icon" href="icon.png">
+  <link rel="apple-touch-icon" href="icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background: #f0f2f5; margin:0; font-family: Arial, sans-serif;}
+    .page-container {
+      display: flex;
+      max-width: 1200px;
+      margin: 1em auto;
+      padding: 1em;
+      gap: 1.5em;
+      background: #fff;
+      min-height: 80vh;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+    .main-content {
+      flex: 1;
+      background: #e9eff5;
+      padding: 1.5em;
+      border-radius: 12px;
+      overflow-y: auto;
+      max-height: 90vh;
+    }
+    .playlist-sidebar {
+      flex: 0 0 320px;
+      background: #dbe9ff;
+      border-radius: 12px;
+      padding: 1em;
+      position: sticky;
+      top: 1em;
+      max-height: 90vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .playlist-sidebar h3 {
+      margin-top: 0;
+      font-weight: 700;
+      font-size: 1.2em;
+      border-bottom: 1px solid #a0c0ff;
+      padding-bottom: 0.4em;
+      margin-bottom: 1.2em;
+      width: 100%;
+      text-align:center;
+    }
+    .playlist-sidebar iframe {
+      width: 95%;
+      min-width: 180px;
+      max-width: 300px;
+      margin-bottom: 1.5em;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px #b9cafd33;
+      background: #fff;
+    }
+    @media (max-width: 900px) {
+      .page-container { flex-direction: column; }
+      .playlist-sidebar {
+        position: relative;
+        max-height: none;
+        margin-top: 2em;
+        width: 100%;
+        align-items: stretch;
+      }
+      .playlist-sidebar iframe { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <main class="main-content">
+      <!-- ========= ALL MAIN SITE CONTENT GOES HERE ========= -->
+      <header>
+        <h1>🐶🫛 Bean Dawg</h1>
+        <nav>
+          <div class="fun-highlights">
+  <button class="highlight-btn" id="highlightMusic">
+    <span class="highlight-emoji">🎶</span>
+  </button>
+  <button class="highlight-btn" id="highlightPhoto">
+    <span class="highlight-emoji">📸</span>
+  </button>
+  <button class="highlight-btn" id="highlightWorkout">
+    <span class="highlight-emoji">🏋️</span>
+  </button>
+  <button class="highlight-btn" id="highlightIdea">
+    <span class="highlight-emoji">🌵</span>
+  </button>
+</div>
+
+      </header>
+
+
+
+      <section id="calendar-section">
+ <button class="section-toggle" onclick="toggleSection('calendarContent')">📅 Our Calendar</button>
+
+
+  <div id="calendarContent" class="section-content">
+    <div id="countdownContainer" style="text-align:center; margin-bottom:1.7em;">
+      <div style="margin-bottom:0.7em;">
+        <label for="nextDateTime" style="font-size:1.07em; color:#3d4a6c; font-weight:500; margin-right:0.6em;">
+          Bean Dawg time:</label>
+        <input type="datetime-local" id="nextDateTime" style="font-size:1em; border-radius:8px; border:1px solid #aad2f9; padding:0.3em 0.6em;">
+        <button id="setCountdownBtn" style="margin-left:0.6em; font-size:1em; background:#eaf5ff; border-radius:8px; border:1px solid #b2d7fa; color:#327ab1; padding:0.3em 1.2em; cursor:pointer;">Set</button>
+      </div>
+      <div id="nextCountdown" class="countdown-box"></div>
+    </div>
+   <div style="max-width: 100%; margin: auto;">
+  <iframe 
+    src="https://calendar.google.com/calendar/embed?src=fed14e084a347c41f6c38b54d5a48a99e2e5f7154c14254bdfd7749cc35edc38%40group.calendar.google.com&ctz=America%2FAnchorage"
+    style="border: 0;"
+    width="100%"
+    height="600"
+    frameborder="0"
+    scrolling="no">
+  </iframe>
+</div>
+
+  </div>
+</section>
+
+
+  <section id="photos">
+   <button class="section-toggle" onclick="toggleSection('photosContent')">📸 Photos</button>
+
+
+    <div id="photosContent" class="section-content">
+      <button id="shuffleBtn">🔀 Shuffle Photos</button>
+      <div class="photo-grid" id="photoGrid"></div>
+    </div>
+  </section>
+
+  <div id="lightbox" style="display:none;">
+    <img loading="lazy" id="lightbox-img" src="" alt="Expanded view">
+  </div>
+
+  <section id="adventure-generator">
+  <button class="section-toggle" onclick="toggleSection('adventureGeneratorContent')">🌵 Date Ideas & Eats</button>
+
+  <div id="adventureGeneratorContent" class="section-content">
+
+
+<div class="generator-card">
+  <h3>🌵 Things To Do In Arizona</h3>
+  <div style="margin-bottom:0.7em;">
+    <label>What vibe? 
+      <input type="text" id="activityFeeling" placeholder="e.g. nature, art, water, music, chill" style="width:60%;">
+      <button id="randomVibeBtn" type="button" style="margin-left:0.4em;">🎲 Random Vibe</button>
+    </label>
+  </div>
+  <div>
+    <label>Start from: 
+      <input type="text" id="activityLocation" placeholder="e.g. Tempe, AZ" style="width:130px;">
+      <span style="color:#888;font-size:0.93em">(leave blank for Phoenix)</span>
+    </label>
+  </div>
+  <div>
+    <label>Max travel distance (miles): 
+      <input type="number" id="activityDistance" min="1" max="200" value="20" style="width:52px">
+    </label>
+  </div>
+  <button id="findActivityBtn">Find Activity</button>
+</div>
+
+
+
+  </div>
+</section>
+
+<section id="games">
+  <button class="section-toggle" onclick="toggleSection('gamesContent')">
+    🎮 Games We Play
+  </button>
+  <div id="gamesContent" class="section-content">
+    <div class="games-buttons">
+      <a href="https://www.nytimes.com/games/wordle/index.html" target="_blank" class="game-btn">
+        <span class="game-emoji">🟩🟨⬛️</span>
+        <span class="game-label">Wordle</span>
+      </a>
+      <a href="https://bandle.app/" target="_blank" class="game-btn">
+        <span class="game-emoji">🎵</span>
+        <span class="game-label">Bandle</span>
+      </a>
+      <a href="https://skribbl.io/" target="_blank" class="game-btn">
+        <span class="game-emoji">🎨</span>
+        <span class="game-label">Skribbl</span>
+      </a>
+    </div>
+    <div style="text-align:center;color:#977;font-size:0.98em;margin-top:0.5em;">
+      (Each game opens in a new tab!)
+    </div>
+  </div>
+</section>
+
+<!-- Words of Affirmation -->
+<section id="words">
+  <button class="section-toggle" onclick="toggleSection('affirmationContent')">
+    📝 Words of Affirmation
+  </button>
+  <div id="affirmationContent" class="section-content">
+    <div class="affirmation-card">
+      <a class="affirmation-btn"
+         href="https://www.icloud.com/notes/0673_BY7tWo97d5PPNEzt8qlA"
+         target="_blank" rel="noopener noreferrer">
+        📝 Open Our Shared Note
+      </a>
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="workouts">
+  <button class="section-toggle" onclick="toggleSection('workoutsContent')">🏋️ Workouts</button>
+
+
+  <div id="workoutsContent" class="section-content">
+    <div class="workout-list">
+
+      <!-- Upper Body -->
+      <div class="workout-category">Upper Body</div>
+
+      <div class="workout-card">
+        <button class="workout-header">Push Power (Chest, Shoulders, Triceps)</button>
+        <div class="workout-details">
+          <ol>
+            <li>Barbell Bench Press<br><span>4 sets x 6–8 reps</span></li>
+            <li>Seated Dumbbell Shoulder Press<br><span>3 sets x 8–10 reps</span></li>
+            <li>Incline Dumbbell Fly<br><span>3 sets x 10–12 reps</span></li>
+            <li>Machine Chest Press<br><span>3 sets x 10–12 reps</span></li>
+            <li>Lateral Raise (dumbbells)<br><span>3 sets x 12–15 reps</span></li>
+            <li>Overhead Dumbbell Triceps Extension<br><span>3 sets x 10–12 reps</span></li>
+            <li>Bench Dips (bodyweight or weighted)<br><span>2–3 sets x 12–15 reps</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="workout-card">
+        <button class="workout-header">Pull Party (Back &amp; Biceps)</button>
+        <div class="workout-details">
+          <ol>
+            <li>Lat Pulldown Machine<br><span>4 sets x 8–10 reps</span></li>
+            <li>Seated Machine Row<br><span>3 sets x 8–12 reps</span></li>
+            <li>Bent-Over Barbell Row<br><span>3 sets x 8–10 reps</span></li>
+            <li>Dumbbell One-Arm Row<br><span>3 sets x 10–12 reps per side</span></li>
+            <li>Rear Delt Fly (dumbbells or machine)<br><span>3 sets x 12–15 reps</span></li>
+            <li>Barbell or Dumbbell Biceps Curl<br><span>3 sets x 10–12 reps</span></li>
+            <li>Hammer Curl (dumbbells)<br><span>2–3 sets x 10–12 reps</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="workout-card">
+        <button class="workout-header">Classic Chest &amp; Arms</button>
+        <div class="workout-details">
+          <ol>
+            <li>Incline Barbell Bench Press<br><span>4 sets x 6–8 reps</span></li>
+            <li>Flat Dumbbell Press<br><span>3 sets x 8–10 reps</span></li>
+            <li>Pec Deck/Chest Machine Fly<br><span>3 sets x 10–15 reps</span></li>
+            <li>Barbell Curl<br><span>3 sets x 8–10 reps</span></li>
+            <li>Skullcrusher (EZ-bar or dumbbell)<br><span>3 sets x 10–12 reps</span></li>
+            <li>Dumbbell Hammer Curl<br><span>3 sets x 10–12 reps</span></li>
+            <li>Triceps Bench Dip<br><span>2 sets x 15 reps</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="workout-card">
+        <button class="workout-header">Athletic Upper Full</button>
+        <div class="workout-details">
+          <ol>
+            <li>Pull-Ups or Assisted Pull-Up<br><span>4 sets x 6–8 reps</span></li>
+            <li>Dips (bodyweight or assisted)<br><span>3 sets x 8–12 reps</span></li>
+            <li>Dumbbell Arnold Press<br><span>3 sets x 10 reps</span></li>
+            <li>Bent-Over Dumbbell Reverse Fly<br><span>3 sets x 12 reps</span></li>
+            <li>Push-Up to Failure (last set finisher)<br><span>2 sets to failure</span></li>
+            <li>Dumbbell Bicep Curl<br><span>3 sets x 10–12 reps</span></li>
+            <li>Overhead Triceps Extension (dumbbell)<br><span>3 sets x 10–12 reps</span></li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Lower Body -->
+      <div class="workout-category">Lower Body</div>
+      
+      <div class="workout-card">
+        <button class="workout-header">Booty Builder</button>
+        <div class="workout-details">
+          <ol>
+            <li>Barbell Hip Thrust<br><span>4 sets x 8–10 reps</span></li>
+            <li>Romanian Deadlift (barbell or dumbbells)<br><span>4 sets x 8–10 reps</span></li>
+            <li>Glute Bridge (bodyweight or barbell)<br><span>3 sets x 12–15 reps</span></li>
+            <li>Leg Press Machine<br><span>3 sets x 10–12 reps</span></li>
+            <li>Seated Abductor Machine<br><span>3 sets x 15–20 reps</span></li>
+            <li>Single-Leg Dumbbell Deadlift<br><span>3 sets x 10 reps/leg</span></li>
+            <li>Walking Lunge (dumbbells)<br><span>3 sets x 16–20 steps</span></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="workout-card">
+        <button class="workout-header">Quad Squad</button>
+        <div class="workout-details">
+          <ol>
+            <li>Barbell Back Squat<br><span>4 sets x 6–8 reps</span></li>
+            <li>Leg Press Machine<br><span>4 sets x 8–12 reps</span></li>
+            <li>Leg Extension Machine<br><span>3 sets x 12–15 reps</span></li>
+            <li>Bulgarian Split Squat (dumbbells)<br><span>3 sets x 10 reps/leg</span></li>
+            <li>Step-Ups (dumbbells or barbell)<br><span>3 sets x 10 reps/leg</span></li>
+            <li>Walking Lunge (dumbbell)<br><span>3 sets x 16–20 steps</span></li>
+            <li>Standing Calf Raise (machine or dumbbell)<br><span>3 sets x 15–20 reps</span></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="workout-card">
+        <button class="workout-header">Hamstring Focus</button>
+        <div class="workout-details">
+          <ol>
+            <li>Romanian Deadlift (barbell or dumbbell)<br><span>4 sets x 8–10 reps</span></li>
+            <li>Leg Curl Machine<br><span>4 sets x 10–12 reps</span></li>
+            <li>Sumo Deadlift (barbell or dumbbell)<br><span>3 sets x 6–8 reps</span></li>
+            <li>Single-Leg Glute Bridge<br><span>3 sets x 12 reps/leg</span></li>
+            <li>Reverse Lunge (dumbbells)<br><span>3 sets x 10 reps/leg</span></li>
+            <li>Seated Leg Curl (machine)<br><span>3 sets x 8–12 reps</span></li>
+            <li>Standing Calf Raise<br><span>3 sets x 15–20 reps</span></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="workout-card">
+        <button class="workout-header">Athletic Leg Day (Power &amp; Box)</button>
+        <div class="workout-details">
+          <ol>
+            <li>Front Squat (barbell)<br><span>4 sets x 6–8 reps</span></li>
+            <li>Trap Bar or Barbell Deadlift<br><span>3 sets x 5–8 reps</span></li>
+            <li>Box Jump<br><span>4 sets x 5–8 reps</span></li>
+            <li>Walking Lunge (dumbbell or barbell)<br><span>3 sets x 16–20 steps</span></li>
+            <li>Step-Up (box, weighted optional)<br><span>3 sets x 10 reps/leg</span></li>
+            <li>Leg Press Machine<br><span>3 sets x 10–15 reps</span></li>
+            <li>Bodyweight Jump Squat (finisher)<br><span>2–3 sets x 15 reps</span></li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Mobility Section (Yoga-Inspired & Relaxing) -->
+<div class="workout-category">Mobility / Yoga</div>
+
+<div class="workout-card">
+  <button class="workout-header">Yoga Flow A (Relax & Restore)</button>
+  <div class="workout-details">
+    <ul>
+      <li>Child’s Pose – 1 min, deep breaths</li>
+      <li>Cat-Cow (slow) – 10–12 reps, focus on breath</li>
+      <li>Downward Dog – 45 sec</li>
+      <li>Kneeling Lunge with Reach – 30 sec/side</li>
+      <li>Supine Twist – 40 sec/side</li>
+      <li>Happy Baby Pose – 1 min</li>
+      <li>Savasana (lay flat, breathe) – 2+ min</li>
+    </ul>
+    <div>Focus on slow, deep breathing throughout. Perfect for study breaks or winding down after your session.</div>
+  </div>
+</div>
+
+<div class="workout-card">
+  <button class="workout-header">Yoga Flow B (Stretch & Breathe)</button>
+  <div class="workout-details">
+    <ul>
+      <li>Seated Forward Fold – 1 min, relax upper body</li>
+      <li>Butterfly Stretch – 45 sec</li>
+      <li>Thread the Needle (shoulder stretch) – 30 sec/side</li>
+      <li>Low Lunge Twist – 40 sec/side</li>
+      <li>Pigeon Pose – 40 sec/side</li>
+      <li>Reclining Figure Four – 1 min/side</li>
+      <li>Guided Breathing (sit or lay, 4 deep inhale/exhale cycles)</li>
+    </ul>
+    <div>A calming flow to release tension and reset before, after, or during a long day. Move gently and never force a stretch.</div>
+  </div>
+</div>
+
+
+      <!-- Abs Section -->
+      <div class="workout-category">Abs/Core</div>
+      <div class="workout-card">
+        <button class="workout-header">Ab Circuit A</button>
+        <div class="workout-details">
+          <ol>
+            <li>Hanging Knee Raise or Captain’s Chair – 3 sets x 12–15 reps</li>
+            <li>Bicycle Crunch – 3 sets x 20 reps (10/side)</li>
+            <li>Plank – 3 sets x 40 sec</li>
+            <li>Russian Twist (weight optional) – 3 sets x 24 reps (12/side)</li>
+            <li>Seated Leg Raise – 3 sets x 15 reps</li>
+          </ol>
+          <div>Rest 30–45 sec. between sets.</div>
+        </div>
+      </div>
+      <div class="workout-card">
+        <button class="workout-header">Ab Circuit B</button>
+        <div class="workout-details">
+          <ol>
+            <li>Decline Sit-Up (bench) – 3 sets x 12–15 reps</li>
+            <li>V-Up – 3 sets x 12 reps</li>
+            <li>Side Plank – 3 sets x 30 sec/side</li>
+            <li>Reverse Crunch – 3 sets x 15 reps</li>
+            <li>Mountain Climber – 3 sets x 30 reps (15/side)</li>
+          </ol>
+          <div>Rest 30–45 sec. between sets.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+</section>
+
+<section id="music" class="mobile-only">
+  <button class="section-toggle" onclick="toggleSection('musicContent')">🎶 My Playlists</button>
+  <div id="musicContent" class="section-content">
+    <iframe src="https://embed.music.apple.com/us/playlist/cheee-huu/pl.u-zPyLLe5TZMPolWr"
+      height="450" frameborder="0" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"
+      sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation">
+    </iframe>
+
+    <iframe allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"
+      frameborder="0" height="450" style="width:100%;max-width:660px;overflow:hidden;border-radius:10px;"
+      sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"
+      src="https://embed.music.apple.com/us/playlist/house-of-rock-and-roll/pl.u-GgA5kvzIaRAX8M"></iframe>
+
+    <iframe src="https://embed.music.apple.com/us/playlist/im-a-sucka-for-brown/pl.u-NpXmzemCj1Adpz"
+      height="450" frameborder="0" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write">
+    </iframe>
+
+    <iframe src="https://open.spotify.com/embed/playlist/2F2Jdj4Vyhc5TnLncqAegG?utm_source=generator"
+      width="100%" height="152" frameborder="0"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy">
+    </iframe>
+  </div>
+</section>
+
+
+
+      <footer>
+        <p>Bean Dawg Soup ❤️</p>
+      </footer>
+    </main>
+<aside class="playlist-sidebar desktop-only">
+
+  <h3>Turn Me Up</h3>
+
+  <button class="playlist-toggle">🎶 Cheee Huu</button>
+  <div class="playlist-content">
+    <iframe src="https://embed.music.apple.com/us/playlist/cheee-huu/pl.u-zPyLLe5TZMPolWr"
+      height="450" frameborder="0" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"
+      sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation">
+    </iframe>
+  </div>
+
+  <button class="playlist-toggle">🎸 House of Rock and Roll</button>
+  <div class="playlist-content">
+<iframe allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" frameborder="0" height="450" style="width:100%;max-width:660px;overflow:hidden;border-radius:10px;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/us/playlist/house-of-rock-and-roll/pl.u-GgA5kvzIaRAX8M"></iframe>
+  </div>
+
+  <button class="playlist-toggle">💖 I'm a Sucka for Brown</button>
+  <div class="playlist-content">
+    <iframe src="https://embed.music.apple.com/us/playlist/im-a-sucka-for-brown/pl.u-NpXmzemCj1Adpz"
+      height="450" frameborder="0" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"></iframe>
+  </div>
+
+  <button class="playlist-toggle">🔀 Shuffles Shuffle</button>
+  <div class="playlist-content">
+<iframe allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" frameborder="0" height="450" style="width:100%;max-width:660px;overflow:hidden;border-radius:10px;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/us/playlist/shuffless-shuffle/pl.u-4JommvBtaMN0bVx"></iframe>
+  </div>
+
+  <button class="playlist-toggle">🎧 B Diggity </button>
+  <div class="playlist-content">
+    <iframe src="https://open.spotify.com/embed/playlist/2F2Jdj4Vyhc5TnLncqAegG?utm_source=generator"
+      width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy"></iframe>
+  </div>
+</aside>
+<script>
+document.querySelectorAll('.playlist-toggle').forEach(button => {
+  button.addEventListener('click', () => {
+    const content = button.nextElementSibling;
+    const isVisible = content.style.display === 'block';
+    document.querySelectorAll('.playlist-content').forEach(c => c.style.display = 'none');
+    if (!isVisible) {
+      content.style.display = 'block';
+    }
+  });
+});
+</script>
+
+
+  </div>
+
+
+<button id="openMapBtn" class="map-fab" aria-haspopup="dialog" aria-controls="mapModal" aria-expanded="false">
+  🌍
+</button>
+
+<!-- Map Modal Trigger Button -->
+<button id="openMapBtn" class="map-modal-button" aria-haspopup="dialog" aria-controls="mapModal" aria-expanded="false">
+  🌍 Map
+</button>
+
+<!-- Map Modal -->
+<div id="mapModal" class="map-modal" role="dialog" aria-modal="true" aria-labelledby="mapModalLabel" tabindex="-1">
+  <div class="map-modal-content">
+    <button id="closeMapBtn" class="map-close-button" aria-label="Close map modal">&times;</button>
+    <h2 id="mapModalLabel">Bean Dawg Around the World 🌍</h2>
+    <div class="map-container">
+      <iframe src="https://www.google.com/maps/d/embed?mid=1zM31cqLZYXhp5cvDS1y_dVmjBpvVCTo&ehbc=2E312F"
+        width="100%"
+        height="480"
+        frameborder="0"
+        style="border:0;"
+        allowfullscreen>
+      </iframe>
+
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>
+
+
+  <!-- All JavaScript below here -->
+  <script>
+function toggleSection(contentId) {
+  const content = document.getElementById(contentId);
+  const button = document.querySelector(`.section-toggle[onclick*="${contentId}"]`);
+
+  content.classList.toggle("open");
+  button.classList.toggle("active");
+}
+
+
+
+    const photoList = [
+      "photos/020605-Combine-139.jpg",
+       "photos/020605-Combine-139.jpg",
+ "photos/12.jpg",
+ "photos/13.jpg",
+ "photos/19.jpg",
+ "photos/1Q1A8156 Copy.jpg",
+ "photos/20.jpg",
+ "photos/21(1).jpg",
+ "photos/21.jpg",
+ "photos/22.jpg",
+ "photos/3.jpg",
+ "photos/6.jpg",
+ "photos/7.jpg",
+ "photos/721F26C6-74CE-4471-B451-56442BA66820.jpg",
+ "photos/8.jpg",
+ "photos/9(1).jpg",
+ "photos/9.jpg",
+ "photos/94CD4E03-EFF3-40FD-8260-8E5AA2BFB2FD.jpg",
+ "photos/IMG_0549.jpg",
+ "photos/IMG_0563.jpg",
+ "photos/IMG_0722.jpg",
+ "photos/IMG_0759.jpg",
+ "photos/IMG_0776.jpg",
+ "photos/IMG_0777.jpg",
+ "photos/IMG_0797.jpg",
+ "photos/IMG_1047.jpg",
+ "photos/IMG_1139.jpg",
+ "photos/IMG_1168.jpg",
+ "photos/IMG_1178.jpg",
+ "photos/IMG_1307.jpg",
+ "photos/IMG_1327.jpg",
+ "photos/IMG_1370.jpg",
+ "photos/IMG_1479.jpg",
+ "photos/IMG_1519.jpg",
+ "photos/IMG_1637.jpg",
+ "photos/IMG_1651.jpg",
+ "photos/IMG_1866.jpg",
+ "photos/IMG_1904.jpg",
+ "photos/IMG_1933.jpg",
+ "photos/IMG_1934.jpg",
+ "photos/IMG_1974.jpg",
+ "photos/IMG_2024.jpg",
+ "photos/IMG_2078.jpg",
+ "photos/IMG_2079.jpg",
+ "photos/IMG_2129.jpg",
+ "photos/IMG_2140.jpg",
+ "photos/IMG_2197.jpg",
+ "photos/IMG_2339.jpg",
+ "photos/IMG_2496.jpg",
+ "photos/IMG_2497.jpg",
+ "photos/IMG_2498.jpg",
+ "photos/IMG_2581.jpg",
+ "photos/IMG_2596.jpg",
+ "photos/IMG_2624.jpg",
+ "photos/IMG_2672.jpg",
+ "photos/IMG_2735.jpg",
+ "photos/IMG_2737.jpg",
+ "photos/IMG_2738.jpg",
+ "photos/IMG_2742.jpg",
+ "photos/IMG_2749.jpg",
+ "photos/IMG_2772.jpg",
+ "photos/IMG_2773.jpg",
+ "photos/IMG_2774.jpg",
+ "photos/IMG_2775.jpg",
+ "photos/IMG_2776.jpg",
+ "photos/IMG_2777.jpg",
+ "photos/IMG_2819.jpg",
+ "photos/IMG_2838.jpg",
+ "photos/IMG_2862.jpg",
+ "photos/IMG_2863.jpg",
+ "photos/IMG_2872.jpg",
+ "photos/IMG_2878.jpg",
+ "photos/IMG_2992.jpg",
+ "photos/IMG_3023.jpg",
+ "photos/IMG_3028.jpg",
+ "photos/IMG_3034.jpg",
+ "photos/IMG_3042.jpg",
+ "photos/IMG_3045.jpg",
+ "photos/IMG_3049.jpg",
+ "photos/IMG_3055.jpg",
+ "photos/IMG_3057.jpg",
+ "photos/IMG_3061.jpg",
+ "photos/IMG_3094.jpg",
+ "photos/IMG_3095.jpg",
+ "photos/IMG_3096.jpg",
+ "photos/IMG_3101.jpg",
+ "photos/IMG_3103.jpg",
+ "photos/IMG_3125.jpg",
+ "photos/IMG_3129.jpg",
+ "photos/IMG_3169.jpg",
+ "photos/IMG_3172.jpg",
+ "photos/IMG_3271.jpg",
+ "photos/IMG_3319.jpg",
+ "photos/IMG_3474.jpg",
+ "photos/IMG_3537.jpg",
+ "photos/IMG_3581.jpg",
+ "photos/IMG_3582.jpg",
+ "photos/IMG_3584.jpg",
+ "photos/IMG_3598.jpg",
+ "photos/IMG_3599.jpg",
+ "photos/IMG_3823.jpg",
+ "photos/IMG_3858.jpg",
+ "photos/IMG_3864.jpg",
+ "photos/IMG_3951.jpg",
+ "photos/IMG_3958.jpg",
+ "photos/IMG_4016.jpg",
+ "photos/IMG_4023.jpg",
+ "photos/IMG_4033.jpg",
+ "photos/IMG_4035.jpg",
+ "photos/IMG_4036.jpg",
+ "photos/IMG_4038.jpg",
+ "photos/IMG_4119.jpg",
+ "photos/IMG_4153.jpg",
+ "photos/IMG_4160.jpg",
+ "photos/IMG_4243.jpg",
+ "photos/IMG_4276.jpg",
+ "photos/IMG_4295.jpg",
+ "photos/IMG_4298.jpg",
+ "photos/IMG_4312.jpg",
+ "photos/IMG_4405.jpg",
+ "photos/IMG_4482.jpg",
+ "photos/IMG_4559.jpg",
+ "photos/IMG_4579.jpg",
+ "photos/IMG_4580.jpg",
+ "photos/IMG_4581.jpg",
+ "photos/IMG_4583.jpg",
+ "photos/IMG_4584.jpg",
+ "photos/IMG_4585.jpg",
+ "photos/IMG_4604.jpg",
+ "photos/IMG_4667.jpg",
+ "photos/IMG_4704.jpg",
+ "photos/IMG_4711.jpg",
+ "photos/IMG_4715.jpg",
+ "photos/IMG_4721.jpg",
+ "photos/IMG_4788.jpg",
+ "photos/IMG_5057.jpg",
+ "photos/IMG_5116.jpg",
+ "photos/IMG_5340.jpg",
+ "photos/IMG_5397.jpg",
+ "photos/IMG_5583.jpg",
+ "photos/IMG_5731.jpg",
+ "photos/IMG_5820.jpg",
+ "photos/IMG_6554.jpg",
+ "photos/IMG_6569.jpg",
+ "photos/IMG_7086.jpg",
+ "photos/IMG_7087.jpg",
+ "photos/IMG_7235.jpg",
+ "photos/IMG_7270.jpg",
+ "photos/IMG_7272.jpg",
+ "photos/IMG_7323.jpg",
+ "photos/IMG_7330.jpg",
+ "photos/IMG_7449.jpg",
+ "photos/IMG_7608.jpg",
+ "photos/IMG_8012.jpg",
+ "photos/IMG_8015.jpg",
+ "photos/IMG_8039.jpg",
+ "photos/IMG_8135.jpg",
+ "photos/IMG_8235.jpg",
+ "photos/IMG_8376.jpg",
+ "photos/IMG_8602.jpg",
+ "photos/IMG_8657.jpg",
+ "photos/IMG_8664.jpg",
+ "photos/IMG_8780.jpg",
+ "photos/IMG_8936.jpg",
+ "photos/IMG_8968.jpg",
+ "photos/IMG_8969.jpg",
+ "photos/IMG_9010.jpg",
+ "photos/IMG_9051.jpg",
+ "photos/IMG_9105.jpg",
+ "photos/IMG_9245.jpg",
+ "photos/IMG_9270.jpg",
+ "photos/IMG_9283.jpg",
+ "photos/IMG_9285.jpg",
+ "photos/IMG_9320.jpg",
+ "photos/IMG_9328.jpg",
+ "photos/IMG_9597.jpg",
+ "photos/IMG_9698.jpg",
+ "photos/IMG_9729.jpg",
+ "photos/IMG_9731.jpg",
+ "photos/IMG_9915.jpg",
+ "photos/IMG_9920.jpg",
+ "photos/IMG_9921.jpg",
+ "photos/IMG_9922.jpg",
+ "photos/IMG_9926.jpg",
+ "photos/IMG_9929.jpg",
+ "photos/IMG_9980.jpg",
+ "photos/IMG_9999.jpg",
+ "photos/P1000432.jpg",
+ "photos/P1000559.jpg",
+ "photos/P1000677.jpg",
+ "photos/P1000702.jpg",
+ "photos/P1000800.jpg",
+ "photos/P1000803.jpg",
+ "photos/P1000967.jpg",
+ "photos/P1010611.jpg",
+ "photos/P1010617.jpg",
+ "photos/P1010629.jpg",
+ "photos/P1010771.jpg",
+ "photos/P1010788.jpg",
+ "photos/P1010792.jpg",
+ "photos/P1010808.jpg",
+ "photos/P1010810.jpg",
+ "photos/P1010853.jpg",
+ "photos/P1010878.jpg",
+ "photos/P1010881.jpg"
+    ];
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const grid = document.getElementById("photoGrid");
+      const shuffleBtn = document.getElementById("shuffleBtn");
+
+      shuffleBtn.addEventListener("click", () => {
+        displayRandomPhotos();
+      });
+
+      function renderPhotos(photoArray) {
+        grid.innerHTML = "";
+        photoArray.forEach(src => {
+          const img = document.createElement("img");
+          img.src = src;
+          img.alt = "";
+          img.loading = "lazy";
+          img.addEventListener("click", () => {
+            const lightbox = document.getElementById("lightbox");
+            const lightboxImg = document.getElementById("lightbox-img");
+            lightboxImg.src = img.src;
+            lightbox.style.display = "flex";
+          });
+          grid.appendChild(img);
+        });
+      }
+
+      function displayRandomPhotos() {
+        const shuffledPhotos = [...photoList].sort(() => 0.5 - Math.random());
+        const selectedPhotos = shuffledPhotos.slice(0, 12);
+        renderPhotos(selectedPhotos);
+      }
+
+      // Initial load
+      displayRandomPhotos();
+
+      // Lightbox close
+      document.getElementById("lightbox").addEventListener("click", () => {
+        document.getElementById("lightbox").style.display = "none";
+      });
+    });
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("#workouts .workout-header").forEach(button => {
+    button.addEventListener("click", function() {
+      // Collapse all others except the clicked workout
+      document.querySelectorAll("#workouts .workout-card").forEach(card => {
+        if (card.contains(button)) {
+          card.classList.toggle("expanded");
+        } else {
+          card.classList.remove("expanded");
+        }
+      });
+    });
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll("#workouts .workout-header").forEach(button => {
+    button.addEventListener("click", function() {
+      const card = button.closest(".workout-card");
+      const details = card.querySelector(".workout-details");
+
+      // Check if details are currently visible
+      const isOpen = details.style.display === "block";
+
+      // Toggle only this workout's details
+      details.style.display = isOpen ? "none" : "block";
+
+      // Optional: toggle a class for styling, e.g., to change header color or icon
+      card.classList.toggle("expanded", !isOpen);
+    });
+  });
+});
+
+
+
+
+document.getElementById("findActivityBtn").onclick = function() {
+  const vibe = document.getElementById("activityFeeling").value.trim() || "things to do";
+  const miles = document.getElementById("activityDistance").value || 20;
+  // Change "Gilbert+AZ" below to your default city or desired central point
+  const city = "Gilbert+AZ";
+  // Build the query string for Google Maps
+  const q = encodeURIComponent(`${vibe} things to do within ${miles} miles near ${city}`);
+  const mapsUrl = `https://www.google.com/maps/search/${q}`;
+  window.open(mapsUrl, "_blank");
+};
+
+const vibeSuggestions = [
+  // Outdoors & Adventure
+  "nature hike", "mountain biking", "rock climbing", "kayaking", "botanical garden", "picnic in the park",
+  
+  // Food & Drink
+  "food trucks", "ice cream crawl", "brewery tour", "wine tasting", "coffee date", "brunch spots",
+
+  // Art & Culture
+  "art gallery", "museum", "live music", "local theater", "comedy show", "historical tour",
+  
+  // Fun & Active
+  "mini golf", "bowling", "trampoline park", "arcade", "go kart racing", "roller skating",
+
+  // Animal Encounters & Nature
+  "zoo", "aquarium", "bird watching", "farmers market", "petting zoo", "horseback riding",
+
+  // Water & Cool-off
+  "lake day", "water park", "pool lounging", "kayak rental", "paddle boarding", "river tubing",
+
+  // Unique Date & Nightlife
+  "escape room", "game night bar", "stargazing", "karaoke", "retro arcade", "night market",
+
+  // Chill & Cozy
+  "bookstore", "thrifting", "yoga in the park", "pottery painting", "movie night", "board games cafe", "tea house",
+
+  // Shopping & Markets
+  "shopping", "flea market", "vintage shops", "craft fair", "maker market",
+
+  // Seasonal & Special
+  "pumpkin patch", "holiday lights", "outdoor festival", "street fair", "cherry blossom viewing",
+
+  // Misc “Arizona” gems
+  "desert sunset view", "Saguaro photography", "Old West town", "drive-in movie", "desert botanical walk"
+];
+
+document.getElementById("randomVibeBtn").onclick = function() {
+  const r = Math.floor(Math.random()*vibeSuggestions.length);
+  document.getElementById("activityFeeling").value = vibeSuggestions[r];
+};
+
+document.getElementById("findActivityBtn").onclick = function() {
+  const vibe = document.getElementById("activityFeeling").value.trim() || "things to do";
+  const miles = document.getElementById("activityDistance").value || 20;
+  let city = document.getElementById("activityLocation").value.trim();
+  if (!city) city = "Phoenix+AZ";
+  const q = encodeURIComponent(`${vibe} things to do within ${miles} miles near ${city}`);
+  const mapsUrl = `https://www.google.com/maps/search/${q}`;
+  window.open(mapsUrl, "_blank");
+};
+
+// Countdown logic
+function updateCountdownBox() {
+  const nextDateStr = localStorage.getItem('nextDateTime') || document.getElementById("nextDateTime").value;
+  if (!nextDateStr) { document.getElementById("nextCountdown").textContent = "Set your next date above 👆"; return;}
+  const nextDate = new Date(nextDateStr);
+  const now = new Date();
+  const diff = nextDate - now;
+  const box = document.getElementById("nextCountdown");
+  if (diff <= 0) {
+    box.textContent = "See you soon :)! 🎉";
+    return;
+  }
+  const days = Math.floor(diff / (1000*60*60*24));
+  const hours = Math.floor((diff / (1000*60*60)) % 24);
+  const mins = Math.floor((diff / (1000*60)) % 60);
+  const secs = Math.floor((diff/1000) % 60);
+
+  let text = "";
+  if (days > 0) text += `${days}d `;
+  if (hours > 0 || days > 0) text += `${hours}h `;
+  if (mins > 0 || hours > 0 || days > 0) text += `${mins}m `;
+  text += `${secs}s to go!`;
+  box.textContent = text;
+}
+
+// Handle date pick/set + save to localStorage
+document.getElementById("setCountdownBtn").onclick = function() {
+  const val = document.getElementById("nextDateTime").value;
+  if (!val) return;
+  localStorage.setItem('nextDateTime', val);
+  updateCountdownBox();
+};
+
+// On page load, set initial value from storage if available
+window.addEventListener("DOMContentLoaded", function(){
+  const input = document.getElementById("nextDateTime");
+  const stored = localStorage.getItem('nextDateTime');
+  if (stored) input.value = stored;
+  updateCountdownBox();
+  setInterval(updateCountdownBox, 1000);
+});
+
+document.getElementById("highlightMusic").onclick = function() {
+  // Reveal/play the first playlist in your sidebar (expand accordion)
+  document.querySelector(".playlist-toggle").click();
+};
+
+document.getElementById("highlightPhoto").onclick = function() {
+  // Scroll to the Photos section and open it
+  document.getElementById("photos").scrollIntoView({ behavior: "smooth" });
+  setTimeout(() => {
+    // Click the new section toggle button for Photos
+    document.querySelector('[onclick*="photosContent"]').click();
+    // Then shuffle photos for fun
+    document.getElementById("shuffleBtn").click();
+  }, 400);
+};
+
+document.getElementById("highlightWorkout").onclick = function() {
+  // Scroll to Workouts section and open it
+  document.getElementById("workouts").scrollIntoView({ behavior: "smooth" });
+  setTimeout(() => {
+    // Click the new section toggle button for Workouts
+    document.querySelector('[onclick*="workoutsContent"]').click();
+    // Optionally open the first workout card inside
+    setTimeout(() => {
+      let firstWorkoutBtn = document.querySelector("#workouts .workout-header");
+      if (firstWorkoutBtn) firstWorkoutBtn.click();
+    }, 300);
+  }, 400);
+};
+
+document.getElementById("highlightIdea").onclick = function() {
+  // Scroll to Things to Do and open the section
+  document.getElementById("adventure-generator").scrollIntoView({ behavior: "smooth" });
+  setTimeout(() => {
+    document.querySelector('[onclick*="adventureGeneratorContent"]').click();
+  }, 400);
+};
+const openMapBtn = document.getElementById('openMapBtn');
+const mapModal = document.getElementById('mapModal');
+const closeMapBtn = document.getElementById('closeMapBtn');
+
+openMapBtn.addEventListener('click', () => {
+  mapModal.classList.add('open');
+  openMapBtn.setAttribute('aria-expanded', 'true');
+  mapModal.focus();
+});
+
+
+closeMapBtn.addEventListener('click', () => {
+  mapModal.classList.remove('open');
+  openMapBtn.setAttribute('aria-expanded', 'false');
+  openMapBtn.focus();
+});
+
+// Close modal on outside click
+mapModal.addEventListener('click', (e) => {
+  if (e.target === mapModal) {
+    mapModal.classList.remove('open');
+    openMapBtn.setAttribute('aria-expanded', 'false');
+    openMapBtn.focus();
+  }
+});
+
+// Close modal with ESC key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && mapModal.classList.contains('open')) {
+    mapModal.classList.remove('open');
+    openMapBtn.setAttribute('aria-expanded', 'false');
+    openMapBtn.focus();
+  }
+});
+
+
+
+  </script>
+</body>
+</html>

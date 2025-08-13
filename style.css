@@ -1,0 +1,948 @@
+/* --- Base Body & Typography --- */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f3fa; /* very light lavender background */
+  color: #322a59; /* dark lavender text color */
+}
+
+/* --- Header & Navigation --- */
+header {
+  background-color: #e7e2f4; /* pale lavender */
+  padding: 20px;
+  text-align: center;
+}
+
+nav a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #6c57b3; /* medium lavender */
+  font-weight: bold;
+}
+
+nav a:hover {
+  color: #4a3e8a; /* deeper lavender */
+}
+
+/* --- Titles --- */
+h1, h2 {
+  color: #6c57b3; /* medium lavender */
+}
+
+/* --- Main Page Layout --- */
+.page-container {
+  display: flex;
+  width: 100vw;        /* Fill full viewport width */
+  max-width: none;     /* No width limit */
+  margin: 0;           /* No auto-centering */
+  padding: 0;  /* Internal side padding */
+  gap: 1.8em;
+  background: #f4f1f9;
+  min-height: 100vh;
+  border-radius: 0;    /* Full bleed look — remove if you like rounded edges */
+  box-shadow: none;    /* Cleaner edges, but you can restore if you want */
+  box-sizing: border-box;
+}
+
+.main-content {
+  flex: 1;
+  background: #e7e2f4;
+  padding: 0;
+  border-radius: 16px;
+  overflow-y: auto;
+  max-height: 0;
+  color: #322a59;
+}
+
+.playlist-sidebar {
+  flex: 0 0 360px;
+  background: #d7ccf8;
+  border-radius: 16px;
+  padding: 1.4em 1.3em;
+  position: sticky;
+  top: 1em;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #3b3177;
+}
+
+.playlist-sidebar iframe {
+  width: 95%;
+  min-width: 200px;
+  max-width: 340px;
+  margin-bottom: 1.8em;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #aa99ff66;
+  background: #fff;
+}
+
+@media (max-width: 900px) {
+  .page-container {
+    flex-direction: column-reverse; /* sidebar on top */
+    width: 100%;
+    padding: 1em;
+  }
+  .playlist-sidebar {
+    position: relative;
+    max-height: none;
+    margin-top: 0;
+    width: 100%;
+    align-items: stretch;
+    color: #4a3e8a;
+  }
+  .playlist-sidebar iframe {
+    max-width: 100%;
+  }
+  .main-content {
+    max-height: none;
+    background: #f5f3fa;
+    color: #322a59;
+  }
+}
+
+/* --- Sections --- */
+section {
+  padding: 20px;
+  border-bottom: 1px solid #ccc5ee;
+}
+
+/* --- Footer --- */
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #e7e2f4;
+  color: #3b3177;
+}
+
+/* --- Photo Grid --- */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  padding: 10px;
+}
+
+.photo-grid img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.photo-grid img:hover {
+  transform: scale(1.05);
+}
+
+/* --- Lightbox --- */
+#lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(50, 42, 89, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+#lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(255,255,255,0.2);
+  animation: fadeIn 0.3s ease;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* --- Buttons --- */
+#shuffleBtn {
+  margin: 1rem auto;
+  display: block;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #b3a4ed;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: #3b3177;
+}
+#shuffleBtn:hover {
+  background-color: #9a85e5;
+}
+
+/* --- Game Buttons (lavender themed) --- */
+.games-buttons {
+  display: flex;
+  gap: 1.2em;
+  margin: 1.4em 0 1.7em 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.game-btn {
+  background: linear-gradient(90deg, #d7ccf8 0%, #bcb3f7 100%);
+  color: #3b3177;
+  border: none;
+  border-radius: 18px;
+  padding: 0.9em 1.6em;
+  font-size: 1.17em;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 16px #a99ef966;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.1s;
+  cursor: pointer;
+}
+.game-btn:hover {
+  background: linear-gradient(90deg, #aa99ff 0%, #c8bee7 100%);
+  color: #241a57;
+  transform: scale(1.045);
+}
+
+.game-emoji {
+  font-size: 1.7em;
+  margin-right: 0.63em;
+  display: inline-block;
+}
+
+.game-label {
+  font-size: 1.11em;
+  letter-spacing: 0.022em;
+}
+
+.playlist-toggle {
+  width: 100%;
+  text-align: left;
+  background: #bcb3f7; /* lavender button */
+  color: #fff;
+  border: none;
+  outline: none;
+  padding: 0.6em 1em;
+  font-size: 1em;
+  font-weight: 600;
+  border-radius: 8px;
+  margin-bottom: 0.5em;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.playlist-toggle:hover {
+  background: #a394e0;
+  transform: scale(1.02);
+}
+
+.playlist-content {
+  display: none;
+  margin-bottom: 1em;
+  width: 100%;
+}
+
+.playlist-content iframe {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(50,0,100,0.15);
+}
+/* Section content is already globally styled for smooth slide */
+.affirmation-card {
+  background: #f4f1f9;
+  padding: 1.5em;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(121, 87, 196, 0.15);
+  text-align: center;
+}
+
+.affirmation-desc {
+  color: #4a3e8a;
+  font-size: 1.05em;
+  max-width: 650px;
+  margin: 0 auto 1.5em auto;
+}
+
+.affirmation-btn {
+  display: inline-block;
+  background: linear-gradient(90deg, #d7ccf8 0%, #bcb3f7 100%);
+  color: #fff;
+  padding: 0.7em 1.4em;
+  border-radius: 25px;
+  font-size: 1.05em;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.1s;
+  box-shadow: 0 3px 8px rgba(98, 75, 180, 0.25);
+}
+
+.affirmation-btn:hover {
+  background: linear-gradient(90deg, #bcb3f7 0%, #9f93e0 100%);
+  transform: translateY(-2px);
+}
+.affirmation-desc {
+  color: #4a3e8a;
+  font-size: 1.05em;
+  max-width: 650px;
+  margin: 0 auto 1.5em auto;
+}
+
+.affirmation-btn {
+  display: inline-block;
+  background: linear-gradient(90deg, #d7ccf8 0%, #bcb3f7 100%);
+  color: #fff;
+  padding: 0.7em 1.4em;
+  border-radius: 25px;
+  font-size: 1.1em;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.1s;
+  box-shadow: 0 3px 8px rgba(98, 75, 180, 0.25);
+}
+
+.affirmation-btn:hover {
+  background: linear-gradient(90deg, #bcb3f7 0%, #9f93e0 100%);
+  transform: translateY(-2px);
+}
+.workout-details {
+  display: none; /* Start collapsed */
+  padding: 1.1em 1.5em; 
+  font-size: 1em;
+  color: #6b3b6b;
+  background: #fff;
+  border-top: 1px solid #ffe3f4;
+  animation: fadeInDetails 0.28s;
+}
+/* Improved Workout Section Styling */
+
+/* Add subtle shadow and padding to each workout card */
+.workout-card {
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(115, 63, 132, 0.1);
+  margin-bottom: 1.5em;
+  background: #faf7ff;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.workout-card:hover {
+  box-shadow: 0 10px 30px rgba(115, 63, 132, 0.2);
+}
+
+/* Style the workout header as a button with better padding, font size, and hover effect */
+.workout-header {
+  width: 100%;
+  background: linear-gradient(90deg, #b5a4f7 0%, #8a70d8 100%);
+  color: #fff;
+  border: none;
+  outline: none;
+  font-size: 1.2em;
+  font-weight: 700;
+  padding: 1.2em 1.5em;
+  cursor: pointer;
+  border-radius: 16px 16px 0 0;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+  transition: background 0.25s ease;
+  text-align: left;
+}
+
+.workout-header:hover {
+  background: linear-gradient(90deg, #9e8cec 0%, #6f53b4 100%);
+}
+
+/* Indicate expanded state visually */
+.workout-card.expanded .workout-header {
+  background: linear-gradient(90deg, #7d66d1 0%, #674ba7 100%);
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* Add smooth fade-in animation to workout details */
+.workout-details {
+  animation: fadeInDetails 0.3s ease forwards;
+  padding: 1.2em 2em;
+  font-size: 1em;
+  color: #523264;
+  background: #f3efff;
+  border-top: 2px solid #b3a4ff;
+  border-radius: 0 0 16px 16px;
+  margin-top: 0;
+}
+
+/* Optionally adjust the padding for smaller screens */
+@media (max-width: 650px) {
+  .workout-header {
+    font-size: 1.05em;
+    padding: 1em 1.2em;
+  }
+  .workout-details {
+    padding: 1em 1.2em;
+    font-size: 0.95em;
+  }
+}
+/* --- Uniform Section Toggle Buttons --- */
+.section-toggle {
+  width: 100%;
+  display: flex;               /* align emoji + text side-by-side */
+  align-items: center;         /* vertical center */
+  gap: 0.5em;                   /* space between emoji and text */
+  background: linear-gradient(90deg, #bcb3f7 0%, #9f93e0 100%);
+  color: #fff;
+  border: none;
+  outline: none;
+  padding: 0.9em 1.2em;         /* consistent padding */
+  font-size: 1.15em;            /* consistent size */
+  font-weight: 600;
+  border-radius: 10px;
+  text-align: left;
+  cursor: pointer;
+  margin-bottom: 0.5em;
+  line-height: 1.2;             /* avoids tall button from text wrapping */
+  transition: background 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 3px 8px rgba(98, 75, 180, 0.25);
+}
+
+.section-toggle:hover {
+  background: linear-gradient(90deg, #a394e0 0%, #7f6ec9 100%);
+  transform: translateY(-2px);
+}
+
+.section-toggle.active {
+  background: linear-gradient(90deg, #7d66d1 0%, #674ba7 100%);
+}
+
+/* --- Affirmation Card --- */
+.affirmation-card {
+  background: #f4f1f9;
+  padding: 1.5em;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(121, 87, 196, 0.15);
+  text-align: center;
+}
+
+.affirmation-desc {
+  color: #4a3e8a;
+  font-size: 1.05em;
+  max-width: 650px;
+  margin: 0 auto 1.5em auto;
+}
+
+.affirmation-btn {
+  display: inline-block;
+  background: linear-gradient(90deg, #d7ccf8 0%, #bcb3f7 100%);
+  color: #fff;
+  padding: 0.7em 1.4em;
+  border-radius: 25px;
+  font-size: 1.05em;          /* lowered to match proportion */
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.1s;
+  box-shadow: 0 3px 8px rgba(98, 75, 180, 0.25);
+}
+
+.affirmation-btn:hover {
+  background: linear-gradient(90deg, #bcb3f7 0%, #9f93e0 100%);
+  transform: translateY(-2px);
+}
+
+.section-toggle {
+  display: flex;             /* make emoji & text align properly */
+  align-items: center;       /* vertical center */
+  gap: 0.5em;                 /* even space between emoji and text */
+  font-size: 1.15em;          /* fixed size for all headers */
+  padding: 0.9em 1.2em;       /* fixed padding for uniform height */
+  line-height: 1.2;           /* stops tall wrapping */
+  white-space: nowrap;        /* prevent button text from wrapping */
+}
+/* Floating Action Button for Map */
+.map-fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #b3a4ed 0%, #9980ff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.6em;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(121, 75, 255, 0.3);
+  transition: background 0.25s, transform 0.15s;
+  z-index: 1600;
+}
+
+.map-fab:hover {
+  background: linear-gradient(135deg, #9980ff 0%, #7d66d1 100%);
+  transform: scale(1.08);
+}
+
+
+}
+
+/* When open */
+.section-content.open {
+  max-height: 1000px; /* large enough to fit the content */
+}
+.section-content {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.35s ease;
+}
+
+.section-content.open {
+  max-height: 1000px;
+  opacity: 1;
+}
+#calendar-section iframe {
+  width: 100%;
+  height: 600px;
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 800px) {
+  #calendar-section iframe {
+    height: 500px; /* slightly shorter for small screens */
+  }
+}
+
+@media (max-width: 500px) {
+  #calendar-section iframe {
+    height: 400px; /* shorter still for mobile */
+  }
+}
+.fun-highlights {
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+  margin: 1.2em 0 2.2em 0;
+}
+
+.highlight-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 86px;
+  height: 86px;
+  background: linear-gradient(135deg, #e6ddfb 0%, #b3a4ed 100%);
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 16px rgba(155, 119, 212, 0.16);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.14s;
+  position: relative;
+  padding: 0;               /* remove internal padding */
+  box-sizing: border-box;   /* include borders/padding in size */
+  overflow: hidden;         /* no overflow past circle */
+}
+
+.highlight-btn:hover {
+  background: linear-gradient(135deg, #bcb3f7 0%, #9e8cec 100%);
+  transform: scale(1.07);
+}
+
+.highlight-emoji {
+  font-size: 1.8em;       /* slightly smaller if needed */
+  margin-bottom: 0.15em;  /* less gap between emoji & text */
+  line-height: 1;
+}
+
+.highlight-label {
+  font-size: 0.8em;       /* smaller label to fit inside circle */
+  color: #6c57b3;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+}
+/* Map Modal Button */
+.map-modal-button {
+  background: linear-gradient(135deg, #b3a4ed 0%, #9980ff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 0.6em 1.6em;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(121, 75, 255, 0.25);
+  transition: background 0.3s ease, transform 0.1s ease;
+  margin: 1em auto;
+  display: block;
+}
+
+.map-modal-button:hover {
+  background: linear-gradient(135deg, #9980ff 0%, #7d66d1 100%);
+  transform: scale(1.05);
+}
+
+/* Modal Background */
+.map-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(50, 42, 89, 0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1500;
+  padding: 1em;
+}
+
+/* Show modal */
+.map-modal.open {
+  display: flex;
+}
+
+/* Modal Content */
+.map-modal-content {
+  background: #f4f1f9;
+  border-radius: 16px;
+  max-width: 900px;
+  width: 95%;
+  max-height: 90vh;
+  padding: 1.5em 1.8em 2em 1.8em;
+  box-shadow: 0 10px 40px rgba(121, 75, 255, 0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+/* Modal Header */
+.map-modal-content h2 {
+  color: #6c57b3;
+  margin-bottom: 0.8em;
+  text-align: center;
+}
+
+/* Close Button */
+.map-close-button {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 2em;
+  font-weight: 700;
+  color: #6c57b3;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  line-height: 1;
+}
+
+.map-close-button:hover {
+  color: #322a59;
+}
+
+/* Map Container */
+.map-container {
+  flex-grow: 1;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(50, 42, 89, 0.2);
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 500px;
+  border: none;
+}
+
+@media (max-width: 600px) {
+  .map-container iframe {
+    height: 350px;
+  }
+}
+
+/* Override for Photos & Workouts sections */
+#photos.section-content,
+#workouts.section-content {
+  max-height: 80vh !important; /* override earlier smaller values */
+  overflow-y: auto;
+  padding-right: 6px;          /* helps avoid scrollbar overlap */
+}
+
+/* Keep photos looking good */
+.photo-grid img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* At the VERY end of your CSS file: */
+#photosContent.section-content.open {
+  max-height: none !important;     /* expand fully */
+  overflow: visible !important;
+}
+
+#workoutsContent.section-content.open {
+  max-height: 80vh !important;     /* scroll inside */
+  overflow-y: auto !important;
+  padding-right: 6px;
+}
+
+/* Polished Photo Grid */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* bigger columns */
+  gap: 14px;                           /* slightly more breathing room */
+  padding: 1em;                         /* symmetric padding around grid */
+}
+
+.photo-grid img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;                  /* consistent shape for display */
+  object-fit: cover;                    /* crop edges, no distortion */
+  border-radius: 12px;                  /* matches your card styling */
+  box-shadow: 0 4px 12px rgba(98, 75, 180, 0.15);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+}
+
+.photo-grid img:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 18px rgba(98, 75, 180, 0.3);
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+  .photo-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+  }
+}
+
+/* --- Step 2: Overall spacing & UI polish --- */
+
+/* Give all sections consistent vertical space */
+section {
+  padding: 1.8em 2em;
+  border-bottom: 1px solid #ccc5ee;
+}
+
+/* On mobile, slightly reduce the padding for tighter look */
+@media (max-width: 700px) {
+  section {
+    padding: 1.2em 1em;
+  }
+}
+
+/* Add breathing room between toggle buttons and their content */
+.section-toggle {
+  margin-top: 0.3em;
+  margin-bottom: 0.8em;
+}
+
+/* Give section contents a uniform 'start' */
+.section-content {
+  padding-top: 0.5em;
+}
+
+/* Make the sidebar and main-content align visually */
+.page-container {
+  gap: 2em; /* slightly larger gap for clarity */
+}
+
+.main-content {
+  padding: 1em 1.5em; /* light padding inside for breathing room */
+}
+
+@media (max-width: 900px) {
+  .page-container {
+    gap: 1.2em; /* smaller gap on mobile */
+  }
+  .main-content {
+    padding: 1em;
+  }
+}
+
+.highlight-btn {
+  width: 86px;       /* fixed width */
+  height: 86px;      /* fixed height */
+  border-radius: 50%; /* makes it a perfect circle */
+  padding: 0;         /* remove extra padding that might mess shape */
+  display: flex;      /* center content */
+  justify-content: center;
+  align-items: center;
+}
+.music-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px; /* adjust as needed */
+  background-color: #d7ccf8;
+  display: flex;
+  align-items: center;
+  padding: 0 1em;
+  box-shadow: 0 -2px 10px rgba(115, 63, 132, 0.1);
+  z-index: 1000;
+}
+
+.highlight-btn {
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  overflow: hidden;         /* prevent content from spilling past circle */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;               /* no extra padding */
+  box-sizing: border-box;
+  flex-shrink: 0;           /* don’t compress in flex layouts */
+}
+.highlight-emoji {
+  font-size: 1.5em;        /* smaller so it doesn't overflow */
+  margin: 0;               /* remove bottom margin */
+  line-height: 1;          /* tighter */
+}
+
+.highlight-label {
+  font-size: 0.7em;        /* shrink text so it fits under emoji */
+  margin: 0;
+  padding: 0;
+  line-height: 1.1;        /* tight vertical spacing */
+  text-align: center;
+}
+
+.highlight-btn {
+  width: 48px;          /* smaller width */
+  height: 48px;         /* same height for circle */
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.highlight-emoji {
+  font-size: 1em;       /* smaller emoji */
+  margin: 0;
+  line-height: 1;
+}
+
+.highlight-label {
+  font-size: 0.5em;     /* smaller label */
+  margin: 0;
+  padding: 0;
+  line-height: 1.1;
+  text-align: center;
+  white-space: nowrap;  /* prevent wrapping */
+}
+.music-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 48px;                  /* slim height */
+  background-color: #d7ccf8;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;  /* align items horizontally */
+  gap: 12px;                    /* space between controls */
+  padding: 0 1em;
+  box-shadow: 0 -2px 10px rgba(115, 63, 132, 0.15);
+  z-index: 10000;               /* above other elements */
+  user-select: none;            /* prevent text selection */
+  font-family: Arial, sans-serif;
+}
+
+.music-bottom-bar button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.3em;
+  color: #6c57b3;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
+
+.music-bottom-bar button:hover {
+  background-color: rgba(107, 87, 179, 0.15);
+}
+
+.music-info {
+  font-size: 0.9em;
+  color: #5a487e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 120px); /* leave room for buttons */
+}
+
+/* Match style of other content sections */
+.music-section {
+  padding: 1.5em 1em;
+  background-color: #f9f7ff; /* light lavender like others */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(155, 119, 212, 0.1);
+  margin: 1.5em 0;
+}
+
+.music-section h2 {
+  margin-bottom: 1em;
+  color: #6c57b3;
+  text-align: center;
+}
+
+.music-section iframe {
+  border-radius: 8px;
+}
+
+/* Show/hide rules */
+.mobile-only {
+  display: none; /* hidden by default */
+}
+
+/* Hide sidebar & show mobile music section on small screens */
+@media (max-width: 768px) {
+  .mobile-only {
+    display: block;  /* show this section on mobile */
+  }
+
+  .sidebar-music {  /* your music sidebar container class */
+    display: none;  /* hide music sidebar on mobile */
+  }
+}
+
+/* Default (desktop-first) — show desktop-only things */
+.desktop-only {
+  display: block;
+}
+
+/* Mobile/small screens — hide desktop-only things */
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+}
